@@ -1,0 +1,144 @@
+/*管理员帐号信息表*/
+CREATE TABLE [dbo].[admin] (
+	[adminUsername] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL ,	/*管理员帐号*/
+	[adminPassword] [varchar] (32) COLLATE Chinese_PRC_CI_AS NULL		/*管理员密码*/
+) ON [PRIMARY]
+
+
+
+/*教师信息表*/
+CREATE TABLE [dbo].[teacherInfo] (
+	[teacherNumber] [varchar] (10) COLLATE Chinese_PRC_CI_AS NOT NULL ,	/*教师职工编号*/
+	[teacherName] [nvarchar] (10) COLLATE Chinese_PRC_CI_AS NULL ,		/*教师姓名*/
+	[teacherPassword] [varchar] (32) COLLATE Chinese_PRC_CI_AS NULL ,	/*教师登陆密码*/
+	[teacherSex] [nchar] (1) COLLATE Chinese_PRC_CI_AS NULL ,		/*教师性别*/
+	[teacherPhoto] [varchar] (50) COLLATE Chinese_PRC_CI_AS NULL ,		/*教师图片路径*/
+	[teacherBirthday] [datetime] NULL ,					/*教师生日*/
+	[teacherArriveTime] [datetime] NULL ,					/*教师入校时间*/
+	[teacherCardNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,	/*教师身份证号*/
+	[teacherAddress] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL ,	/*教师家庭地址*/
+	[teacherPhone] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*教师电话*/
+	[teacherMemo] [ntext] COLLATE Chinese_PRC_CI_AS NULL 			/*附加信息*/
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+/*班级信息表*/
+CREATE TABLE [dbo].[classInfo] (
+	[classNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL ,	/*班级编号*/
+	[className] [nvarchar] (30) COLLATE Chinese_PRC_CI_AS NULL ,		/*班级名称*/
+	[classSpecialFieldNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,/*班级所在专业编号*/
+	[classBeginTime] [datetime] NULL ,					/*班级成立时间*/
+	[classYearsTime] [int] NULL ,						/*班级几年制*/
+	[classTeacherCharge] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,	/*班主任姓名*/
+	[classMemo] [ntext] COLLATE Chinese_PRC_CI_AS NULL 			/*附加信息*/
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+/*某学期班级开设课程信息表*/
+CREATE TABLE [dbo].[classCourseInfo] (
+	[courseNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL ,	/*课程编号*/
+	[courseName] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*课程名称*/
+	[courseType] [nchar] (8) COLLATE Chinese_PRC_CI_AS NULL ,		/*课程类型：必修课*/
+	[classNumber] [varchar] (50) COLLATE Chinese_PRC_CI_AS NULL ,		/*班级编号*/
+	[termId] [int] NULL ,							/*学年度和学期编号*/
+	[courseScore] [float] NULL ,						/*课程学分*/
+	[courseMemo] [ntext] COLLATE Chinese_PRC_CI_AS NULL 			/*备注信息*/
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+/*某学期班级所开课程的课程上课信息表*/
+CREATE TABLE [dbo].[classCourseTeach] (
+	[teachId] [int] NOT NULL ,						/*课程授课编号*/
+	[courseNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*课程编号*/
+	[termId] [int] NULL ,							/*年度和学期编号*/	
+	[classNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*班级编号*/
+	[teacherNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*教师编号*/
+	[teachClassRoom] [nvarchar] (30) COLLATE Chinese_PRC_CI_AS NULL ,	/*上课教室*/
+	[teachDay] [int] NULL ,							/*星期几上课：(1,2,3,4,5,6,7之一)
+	[MorningOne] [bit] NULL ,						/*上午第一节是否有课*/
+	[MorningTwo] [bit] NULL ,						/*上午第二节是否有课*/
+	[MorningThree] [bit] NULL ,						/*上午第三节是否有课*/
+	[MorningFour] [bit] NULL ,						/*上午第四节是否有课*/
+	[MorningFive] [bit] NULL ,						/*上午第五节是否有课*/
+	[AfternoonOne] [bit] NULL ,						/*下午第一节是否有课*/
+	[AfternoonTwo] [bit] NULL ,						/*下午第二节是否有课*/
+	[AfternoonThree] [bit] NULL ,						/*下午第三节是否有课*/
+	[AfternoonFour] [bit] NULL ,						/*下午第四节是否有课*/
+	[EveningOne] [bit] NULL ,						/*晚上第一节是否有课*/
+	[EveningTwo] [bit] NULL ,						/*晚上第二节是否有课*/
+	[EveningThree] [bit] NULL 						/*晚上第三节是否有课*/
+) ON [PRIMARY]
+
+/*某学期学校选修课程信息表*/
+CREATE TABLE [dbo].[publicCourseInfo] (						
+	[courseNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL ,	/*选修课课程编号*/
+	[courseName] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*课程名称*/		
+	[courseType] [nchar] (8) COLLATE Chinese_PRC_CI_AS NULL ,		/*课程类型：选修课*/
+	[specialFieldNumber] [varchar] (30) COLLATE Chinese_PRC_CI_AS NULL ,	/*专业编号*/
+	[termId] [int] NULL ,							/*学年度和学期编号*/
+	[courseScore] [float] NULL ,						/*课程学分*/
+	[courseMemo] [ntext] COLLATE Chinese_PRC_CI_AS NULL 			/*备注信息*/
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+/*对选修课程的学生选课信息表*/
+CREATE TABLE [dbo].[studentSelectCourseInfo] (					
+	[studentNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*学生学号*/
+	[courseNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL , 	/*选修课课程编号*/
+) ON [PRIMARY]
+
+/*公共选修课程上课信息表*/
+CREATE TABLE [dbo].[publicCourseTeach] (
+	[teachId] [int] IDENTITY (1, 1) NOT NULL ,				/*上课信息编号*/
+	[couserNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*选修课编号*/
+	[specialFieldNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,	/*专业编号*/
+	[teacherNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*上课教师编号*/
+	[teachClassRoom] [nvarchar] (30) COLLATE Chinese_PRC_CI_AS NULL ,	/*上课所在教室*/
+	[teachDay] [int] NULL ,							/*星期几上课：(1,2,3,4,5,6,7之一)
+	[MorningOne] [bit] NULL ,						/*上午第一节是否有课*/
+	[MorningTwo] [bit] NULL ,						/*上午第二节是否有课*/
+	[MorningThree] [bit] NULL ,						/*上午第三节是否有课*/
+	[MorningFour] [bit] NULL ,						/*上午第四节是否有课*/
+	[MorningFive] [bit] NULL ,						/*上午第五节是否有课*/
+	[AfternoonOne] [bit] NULL ,						/*下午第一节是否有课*/
+	[AfternoonTwo] [bit] NULL ,						/*下午第二节是否有课*/
+	[AfternoonThree] [bit] NULL ,						/*下午第三节是否有课*/
+	[AfternoonFour] [bit] NULL ,						/*下午第四节是否有课*/
+	[EveningOne] [bit] NULL ,						/*晚上第一节是否有课*/	
+	[EveningTwo] [bit] NULL ,						/*晚上第二节是否有课*/	
+	[EveningThree] [bit] NULL 						/*晚上第三节是否有课*/	
+) ON [PRIMARY]
+
+/*学生成绩信息表*/
+CREATE TABLE [dbo].[scoreInfo] (
+	[scoreId] [int] IDENTITY (1, 1) NOT NULL ,				/*成绩信息编号*/
+	[studentNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*学生编号*/
+	[courseNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL ,	/*课程编号*/
+	[isSelect] [int] NULL ,							/*是否是选修课*/
+	[score] [float] NULL 							/*成绩*/
+) ON [PRIMARY]
+
+/*系统配置信息表*/
+CREATE TABLE [dbo].[config] (
+	[id] [int] IDENTITY (1, 1) NOT NULL ,					/*信息记录编号*/
+	[systemName] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL ,		/*系统名称*/
+	[author] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,		/*作者姓名*/
+	[email] [varchar] (50) COLLATE Chinese_PRC_CI_AS NULL ,			/*作者Email*/
+	[qq] [varchar] (30) COLLATE Chinese_PRC_CI_AS NULL ,			/*作者qq*/
+	[phone] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,			/*作者电话*/
+	[pageSize] [int] NULL ,							/*每页显示记录条数*/
+	[canSelect] [int] NULL ,						/*是否开放选课*/
+	[termId] [int] NULL ,							/*选课所在年度和学期*/
+	[selectStartTime] [datetime] NULL ,					/*选课开始时间*/
+	[selectEndTime] [datetime] NULL 					/*选课结束时间*/
+) ON [PRIMARY]
+
+/*专业信息表*/
+CREATE TABLE [dbo].[specialFieldInfo] (
+	[specialFieldNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL ,/*专业编号*/
+	[specialFieldName] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL ,	/*专业名称*/
+	[specialCollegeNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NULL 	/*专业所在学院编号*/
+) ON [PRIMARY]
+
+/*学院信息表*/
+CREATE TABLE [dbo].[collegeInfo] (
+	[collegeNumber] [varchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL ,	/*学院编号*/
+	[collegeName] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL 		/*学院名称*/
+) ON [PRIMARY]
+
